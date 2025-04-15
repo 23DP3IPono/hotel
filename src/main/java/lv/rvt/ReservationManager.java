@@ -2,11 +2,12 @@ package lv.rvt;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.nio.file.StandardOpenOption;
+
 import lv.rvt.tools.Helper;
 
 public class ReservationManager {
@@ -57,10 +58,15 @@ public class ReservationManager {
     }
 
     private void loadReservationsFromCSV() {
-        try (BufferedReader reader = Helper.getReader("reservations.csv")) {
+        try (BufferedReader reader = Helper.getReader(CSV_FILE)) {
             String line;
+            reader.readLine(); // Skip header line
             while ((line = reader.readLine()) != null) {
                 String[] fields = line.split(",");
+                if (fields.length < 4) {
+                    System.err.println("Invalid line: " + line);
+                    continue;
+                }
                 String guestName = fields[0];
                 int roomNumber = Integer.parseInt(fields[1]);
                 LocalDate checkInDate = LocalDate.parse(fields[2]);

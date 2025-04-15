@@ -24,7 +24,7 @@ public class Main {
                     System.out.println("Ievadiet viesa vārdu: ");
                     String name = scanner.nextLine();
                     System.out.println("Ievadiet room numuru: ");
-                    int roomNumber = scanner.nextInt();
+                    int roomNumber = Integer.parseInt(scanner.nextLine());
                     scanner.nextLine();
                     System.out.println("Ievadiet ierašanās datumu (YYYY-MM-DD): ");
                     LocalDate checkIn = LocalDate.parse(scanner.nextLine());
