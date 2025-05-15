@@ -43,11 +43,15 @@ public class ReservationManager {
     }
 
     public void displayReservations() {
-        reservations.forEach(System.out::println);
+        if (reservations.isEmpty()) {
+            System.out.println("Nav nevienas rezervācijas.");
+        } else {
+            reservations.forEach(System.out::println);
+        }
     }
 
     private void saveReservationsToCSV() {
-        try (BufferedWriter writer = Helper.getWriter("reservations.csv", StandardOpenOption.CREATE)) {
+        try (BufferedWriter writer = Helper.getWriter(CSV_FILE, StandardOpenOption.TRUNCATE_EXISTING)) {
             for (Reservation reservation : reservations) {
                 writer.write(reservation.toCSV());
                 writer.newLine();
@@ -60,8 +64,8 @@ public class ReservationManager {
     private void loadReservationsFromCSV() {
         try (BufferedReader reader = Helper.getReader(CSV_FILE)) {
             String line;
-            reader.readLine(); // Skip header line
             while ((line = reader.readLine()) != null) {
+                if (line.trim().isEmpty()) continue;
                 String[] fields = line.split(",");
                 if (fields.length < 4) {
                     System.err.println("Invalid line: " + line);
@@ -74,7 +78,7 @@ public class ReservationManager {
                 reservations.add(new Reservation(guestName, roomNumber, checkInDate, checkOutDate));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            // Ja fails nav, tas tiks izveidots Helper klasē, tāpēc šeit nav jāuztraucas
         }
     }
 }
