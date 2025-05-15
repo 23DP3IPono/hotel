@@ -78,7 +78,7 @@ public class ReservationManager {
                 reservations.add(new Reservation(guestName, roomNumber, checkInDate, checkOutDate));
             }
         } catch (IOException e) {
-            // Ja fails nav, tas tiks izveidots Helper klasē, tāpēc šeit nav jāuztraucas
+            
         }
     }
 }
